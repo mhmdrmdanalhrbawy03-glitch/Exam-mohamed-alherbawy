@@ -1,25 +1,17 @@
-import { getApp, getApps, initializeApp } from 'firebase/app'
-import { getAuth } from 'firebase/auth'
-import { getFirestore } from 'firebase/firestore'
-import { getStorage } from 'firebase/storage'
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
-}
+  apiKey: "AIzaSyCtvLi1JtJ-KjN6cjPzfc56jVb4StxWbM",
+  authDomain: "exam-mohamed-alherbawy.firebaseapp.com",
+  projectId: "exam-mohamed-alherbawy",
+  storageBucket: "exam-mohamed-alherbawy.firebasestorage.app",
+  messagingSenderId: "798880376514",
+  appId: "1:798880376514:web:487a1d5f87d42e27a0fd5b"
+};
 
-export const isFirebaseConfigured = Object.values(firebaseConfig).every(
-  (value) => typeof value === 'string' && value.length > 0,
-)
+const app = initializeApp(firebaseConfig);
 
-const app = isFirebaseConfigured
-  ? (getApps().length ? getApp() : initializeApp(firebaseConfig))
-  : null
-
-export const auth = app ? getAuth(app) : null
-export const db = app ? getFirestore(app) : null
-export const storage = app ? getStorage(app) : null
+export const auth = getAuth(app);
+export const db = getFirestore(app);
