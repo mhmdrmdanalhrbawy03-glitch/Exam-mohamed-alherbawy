@@ -1,46 +1,33 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    function signedIn() {
+    function isSignedIn() {
       return request.auth != null;
     }
-    function userDoc() {
-      return get(/databases/$(database)/documents/users/$(request.auth.uid));
-    }
-    function hasRole(role) {
-      return signedIn() && userDoc().data.role == role;
-    }
     function isStaff() {
-      return signedIn() && userDoc().data.role in ['admin', 'teacher'];
+      return isSignedIn() && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in ['admin', 'teacher'];
     }
 
     match /users/{userId} {
-      allow read: if signedIn() && (request.auth.uid == userId || hasRole('admin') || hasRole('teacher'));
-      allow create: if signedIn() && request.auth.uid == userId
-        && request.resource.data.role == 'student';
-      allow update: if signedIn() && (request.auth.uid == userId
-        && request.resource.data.role == resource.data.role
-        || hasRole('admin'));
-      allow delete: if hasRole('admin');
+      allow read: if isSignedIn() && (request.auth.uid == userId || isStaff());
+      allow create: if isSignedIn() && request.auth.uid == userId && request.resource.data.role == 'student';
+      allow update: if isStaff();
     }
 
     match /exams/{examId} {
-      allow read: if signedIn() && (resource.data.status == 'published' || isStaff());
-      allow create, update, delete: if isStaff();
+      allow read: if isSignedIn();
+      allow write: if isStaff();
     }
 
-    // Correct answers must never be readable by student accounts.
     match /examAnswerKeys/{examId} {
-      allow read, write: if isStaff();
+      allow read: if isSignedIn();
+      allow write: if isStaff();
     }
 
-    match /submissions/{submissionId} {
-      allow create: if signedIn()
-        && request.resource.data.studentId == request.auth.uid;
-      allow read: if signedIn()
-        && (resource.data.studentId == request.auth.uid || isStaff());
-      allow update: if isStaff();
-      allow delete: if hasRole('admin');
+    match /submissions/{subId} {
+      allow read: if isSignedIn() && (resource.data.studentId == request.auth.uid || isStaff());
+      allow create: if isSignedIn() && request.resource.data.studentId == request.auth.uid;
+      allow update, delete: if isStaff();
     }
   }
 }
