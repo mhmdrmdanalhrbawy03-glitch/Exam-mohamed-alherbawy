@@ -1,45 +1,46 @@
 rules_version = '2';
-
 service cloud.firestore {
   match /databases/{database}/documents {
-
     function signedIn() {
       return request.auth != null;
     }
-
-    function isAdmin() {
-      return signedIn()
-        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
-        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin";
+    function userDoc() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid));
+    }
+    function hasRole(role) {
+      return signedIn() && userDoc().data.role == role;
+    }
+    function isStaff() {
+      return signedIn() && userDoc().data.role in ['admin', 'teacher'];
     }
 
     match /users/{userId} {
-      allow create: if signedIn()
-        && request.auth.uid == userId
-        && request.resource.data.role == "student";
-
-      allow read: if signedIn()
-        && (request.auth.uid == userId || isAdmin());
-
-      allow update: if isAdmin();
-      allow delete: if isAdmin();
+      allow read: if signedIn() && (request.auth.uid == userId || hasRole('admin') || hasRole('teacher'));
+      allow create: if signedIn() && request.auth.uid == userId
+        && request.resource.data.role == 'student';
+      allow update: if signedIn() && (request.auth.uid == userId
+        && request.resource.data.role == resource.data.role
+        || hasRole('admin'));
+      allow delete: if hasRole('admin');
     }
 
     match /exams/{examId} {
-      allow read: if isAdmin()
-        || (signedIn() && resource.data.published == true);
-
-      allow create, update, delete: if isAdmin();
+      allow read: if signedIn() && (resource.data.status == 'published' || isStaff());
+      allow create, update, delete: if isStaff();
     }
 
-    match /results/{resultId} {
+    // Correct answers must never be readable by student accounts.
+    match /examAnswerKeys/{examId} {
+      allow read, write: if isStaff();
+    }
+
+    match /submissions/{submissionId} {
       allow create: if signedIn()
         && request.resource.data.studentId == request.auth.uid;
-
-      allow read: if isAdmin()
-        || (signedIn() && resource.data.studentId == request.auth.uid);
-
-      allow update, delete: if isAdmin();
+      allow read: if signedIn()
+        && (resource.data.studentId == request.auth.uid || isStaff());
+      allow update: if isStaff();
+      allow delete: if hasRole('admin');
     }
   }
 }
