@@ -12,7 +12,7 @@ import {
   BookOpen, ClipboardList, GraduationCap, LayoutDashboard, LogOut, Plus, Users,
   Clock3, FileQuestion, X, ShieldCheck, AlertCircle,
 } from 'lucide-react'
-import { auth, db, isFirebaseConfigured } from './lib/firebase'
+import { auth, db, isFirebaseConfigured } from './firebase';
 
 type Role = 'admin' | 'teacher' | 'student'
 type Exam = {
