@@ -119,9 +119,30 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--primary2);outline-o
 }
 @media(max-width:370px){.home-grid{grid-template-columns:1fr}.choice{min-height:155px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+.announcement-banner{
+ width:100%;padding:10px 16px;text-align:center;position:relative;overflow:hidden;
+ color:#fff;background:linear-gradient(100deg,#18294a 0%,#3458d4 48%,#0d9488 100%);
+ font-family:Cairo,Tahoma,sans-serif;font-size:.82rem;font-weight:900;
+ box-shadow:0 5px 18px rgba(29,55,112,.16)
+}
+.announcement-banner:before{
+ content:"";position:absolute;inset:0;
+ background:linear-gradient(110deg,transparent 20%,rgba(255,255,255,.13) 48%,transparent 72%);
+ transform:translateX(-100%);animation:bannerShine 5s ease-in-out infinite
+}
+.announcement-inner{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;gap:10px}
+.announcement-dot{width:7px;height:7px;border-radius:50%;background:#ffe09b;box-shadow:0 0 10px #ffe09b;flex:none}
+@keyframes bannerShine{0%,35%{transform:translateX(-100%)}75%,100%{transform:translateX(100%)}}
+@media(max-width:480px){.announcement-banner{font-size:.74rem;padding:9px 10px}}
+@media(prefers-reduced-motion:reduce){.announcement-banner:before{animation:none}}
+
 </style>
 </head>
 <body>
+<div class="announcement-banner" role="status" aria-label="إعلان">
+ <div class="announcement-inner"><span class="announcement-dot"></span><span>انتظروا تحديثات قادمة</span><span class="announcement-dot"></span></div>
+</div>
 <div class="shell">
  <header class="header">
   <div class="brand">
