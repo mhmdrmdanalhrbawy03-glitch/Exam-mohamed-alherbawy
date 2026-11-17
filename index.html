@@ -1,13 +1,212 @@
-<!doctype html>
-<html lang="ar" dir="rtl">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#101b35" />
-    <title>منصة الحرباوي للامتحانات</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f4f7fb"><title>حل منصات وزارة التربية والتعليم</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+ --bg:#f3f6fa;--surface:#ffffff;--surface-soft:#f7f9fc;--ink:#172638;--muted:#718096;
+ --line:#e4eaf1;--accent:#087f79;--accent-2:#19a99a;--accent-soft:#e8f6f3;
+ --gold:#a97835;--gold-soft:#fbf3e7;--shadow:0 14px 38px rgba(22,42,62,.075);
+ color-scheme:light;
+}
+html[data-theme="dark"]{
+ --bg:#0b1420;--surface:#121f2e;--surface-soft:#182839;--ink:#edf4fb;--muted:#a1b2c4;
+ --line:#293b4e;--accent:#5bd0c0;--accent-2:#8be1d5;--accent-soft:#173b3b;
+ --gold:#e5bd7b;--gold-soft:#3a3022;--shadow:0 16px 42px rgba(0,0,0,.22);
+ color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{min-height:100%;background:var(--bg);transition:background .25s ease}
+body{margin:0;min-height:100vh;background:linear-gradient(145deg,rgba(8,127,121,.055),transparent 38%),var(--bg);color:var(--ink);font-family:Cairo,Tahoma,sans-serif;transition:background .25s ease,color .25s ease}
+button,a{font:inherit}
+.topbar{max-width:1000px;margin:auto;padding:17px 20px 13px;display:flex;justify-content:flex-start}
+.theme-toggle{display:inline-flex;align-items:center;gap:10px;padding:8px 13px;border:1px solid var(--line);border-radius:16px;background:var(--surface);color:var(--ink);box-shadow:0 5px 18px rgba(20,40,60,.055);cursor:pointer;transition:background .2s,border-color .2s,transform .2s}
+.theme-toggle:hover{border-color:var(--accent);transform:translateY(-2px)}
+.theme-symbol{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:var(--gold-soft);color:var(--gold)}
+.theme-symbol svg{width:20px;height:20px}
+.theme-copy{display:flex;flex-direction:column;text-align:right;line-height:1.45}
+.theme-copy strong{font-size:.77rem}.theme-copy small{font-size:.63rem;color:var(--muted)}
+.switch{width:36px;height:20px;border-radius:20px;background:var(--line);padding:3px;transition:background .2s}
+.switch i{display:block;width:14px;height:14px;border-radius:50%;background:#fff;box-shadow:0 1px 4px #0003;transition:transform .22s}
+html[data-theme="dark"] .switch{background:var(--accent)}
+html[data-theme="dark"] .switch i{transform:translateX(-16px)}
+.hero{position:relative;isolation:isolate;overflow:hidden;text-align:center;color:#fff;padding:38px 18px 65px;background:linear-gradient(118deg,#10263d 0%,#14515b 100%)}
+.hero:before,.hero:after{content:"";position:absolute;z-index:-1;border:1px solid #ffffff16;border-radius:50%;pointer-events:none}
+.hero:before{width:360px;height:360px;right:-145px;top:-245px}
+.hero:after{width:300px;height:300px;left:-125px;bottom:-225px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;border:1px solid #e5c98a55;background:#ffffff0b;border-radius:30px;padding:6px 15px;color:#f0d49e;font-size:.75rem;font-weight:800;margin:0 0 13px}
+.hero h1{font-size:clamp(1.35rem,4vw,2.05rem);line-height:1.75;margin:0;font-weight:900;letter-spacing:-.3px}
+.hero p:last-child{color:#c7d9e2;font-size:.86rem;margin:8px 0 0}
+main{max-width:920px;margin:-29px auto 0;padding:0 19px 22px;position:relative;z-index:1}
+.view{display:none}.view.active{display:block;animation:appear .25s ease}
+@keyframes appear{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.section-title{font-size:1rem;font-weight:900;margin:26px 3px 15px;display:flex;align-items:center;gap:10px}
+.section-title:before{content:"";width:4px;height:21px;border-radius:8px;background:var(--accent)}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.card{width:100%;min-height:168px;padding:21px;border:1px solid var(--line);border-radius:21px;background:var(--surface);color:var(--ink);text-align:right;box-shadow:var(--shadow);cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;transition:transform .2s,border-color .2s,box-shadow .2s,background .2s}
+.card:before{content:"";position:absolute;inset:0 0 auto;height:4px;background:linear-gradient(90deg,var(--accent),#91d8cb)}
+.card:hover{transform:translateY(-4px);border-color:var(--accent);box-shadow:0 18px 42px rgba(20,40,60,.13)}
+.card:active{transform:scale(.985)}
+.card-top{display:flex;align-items:center;gap:14px}
+.symbol{width:51px;height:51px;flex:0 0 51px;display:grid;place-items:center;border-radius:16px;background:var(--accent-soft);color:var(--accent);font-size:1.05rem;font-weight:900}
+.card h2{margin:0 0 3px;font-size:1.05rem;font-weight:900}
+.card p{margin:0;color:var(--muted);font-size:.77rem}
+.card-action{border-top:1px solid var(--line);padding-top:12px;margin-top:20px;display:flex;justify-content:space-between;align-items:center;color:var(--accent);font-size:.81rem;font-weight:900}
+.financial:before{background:linear-gradient(90deg,#a97835,#e5c78d)}
+.financial .symbol{background:var(--gold-soft);color:var(--gold)}
+.nav-row{margin:17px 0 13px}
+.back{border:1px solid var(--line);border-radius:13px;background:var(--surface);color:var(--ink);padding:9px 15px;font-size:.82rem;font-weight:900;box-shadow:0 5px 16px rgba(20,40,60,.045);cursor:pointer;transition:.2s}
+.back:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-1px)}
+.heading{border-radius:20px;background:linear-gradient(118deg,#10263d,#14515b);color:#fff;padding:21px 23px;margin-bottom:17px;box-shadow:var(--shadow)}
+.heading h2{font-size:1.18rem;margin:0;font-weight:900}.heading p{margin:5px 0 0;color:#c7d9e2;font-size:.81rem}
+.stats{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:12px 2px 9px;color:var(--muted);font-size:.8rem;font-weight:800}
+.percent{background:var(--accent-soft);color:var(--accent);border-radius:30px;padding:5px 12px}
+.progress{height:8px;border-radius:20px;background:var(--line);overflow:hidden;margin-bottom:19px}
+.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));border-radius:20px;transition:width .25s}
+.levels{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:11px}
+.levels a{min-height:84px;padding:12px 8px;border:1px solid var(--line);border-radius:16px;background:var(--surface);color:var(--ink);text-decoration:none;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4px;font-weight:900;box-shadow:0 5px 14px rgba(20,40,60,.035);transition:.18s;position:relative}
+.levels a:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:var(--shadow)}
+.levels a:active{transform:scale(.97)}
+.level-number{font-size:1rem}.level-caption{font-size:.67rem;color:var(--muted)}
+.tick{display:none;position:absolute;top:5px;left:8px;color:var(--accent);font-size:.8rem}
+.levels a.done{background:var(--accent-soft);border-color:#75bfb1;color:var(--accent)}
+.levels a.done .tick{display:block}
+.reset{margin-top:17px;padding:8px 13px;border:1px solid var(--line);border-radius:11px;background:var(--surface-soft);color:var(--muted);font-size:.76rem;font-weight:800;cursor:pointer}
+.reset:hover{border-color:#c77;color:#b55}
+footer{max-width:560px;margin:27px auto 9px;padding:0 12px}
+.credits{display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 14px;border:1px solid var(--line);border-radius:13px;background:var(--surface-soft);color:var(--muted);font-size:.69rem;line-height:1.8;text-align:center}
+.credits strong{color:var(--ink);font-size:.73rem;font-weight:900}
+.credits .separator{color:var(--accent);font-weight:900}
+:focus-visible{outline:3px solid var(--accent-2);outline-offset:3px}
+@media(max-width:560px){
+ .topbar{padding:12px 13px}.hero{padding:30px 13px 57px}.hero h1{font-size:1.32rem}
+ main{padding-inline:12px}.cards{gap:10px}
+ .card{padding:16px 13px;min-height:153px;border-radius:18px}
+ .symbol{width:43px;height:43px;flex-basis:43px;border-radius:13px}
+ .card-top{gap:9px;align-items:flex-start}.card h2{font-size:.94rem}.card p{font-size:.69rem}.card-action{font-size:.74rem}
+ .levels{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.levels a{min-height:77px}
+ .heading{padding:18px;border-radius:17px}
+}
+@media(max-width:360px){.cards{grid-template-columns:1fr}.levels{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+</style></head>
+<body>
+<div class="topbar"><button class="theme-toggle" id="themeToggle" type="button" aria-label="تغيير المظهر"><span class="theme-symbol" id="themeIcon"><svg viewBox="0 0 24 24" fill="none"><path d="M20 15.2A8.2 8.2 0 0 1 8.8 4 8.4 8.4 0 1 0 20 15.2Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span><span class="theme-copy"><strong id="themeLabel">المظهر الليلي</strong><small id="themeHint">التبديل إلى الوضع الداكن</small></span><span class="switch"><i></i></span></button></div>
+<section class="hero"><p class="eyebrow">بوابة الإجابات التعليمية</p><h1>حل منصات وزارة التربية والتعليم<br>للصفين الأول والثاني الثانوي</h1><p>اختر المنصة ثم المادة أو الفصل المطلوب</p></section>
+<main>
+<section class="view active" id="home"><h2 class="section-title">المنصات المتاحة</h2><div class="cards">
+<button class="card" onclick="showQureo()" type="button"><div class="card-top"><div class="symbol">⌘</div><div><h2>منصة كيريو</h2><p>فصول البرمجة والتدريبات</p></div></div><div class="card-action"><span>اختيار المادة</span><span>←</span></div></button>
+<button class="card financial" onclick="openSection('fin')" type="button"><div class="card-top"><div class="symbol">▤</div><div><h2>الثقافة المالية</h2><p>إجابات الفصول والمستويات</p></div></div><div class="card-action"><span>عرض الفصول</span><span>←</span></div></button>
+</div></section>
+<section class="view" id="qureo"><div class="nav-row"><button class="back" onclick="goBack()" type="button">→ رجوع للخطوة السابقة</button></div><div class="heading"><h2>منصة كيريو</h2><p>اختر لغة البرمجة لعرض الفصول</p></div><div class="cards">
+<button class="card" onclick="openSection('js')" type="button"><div class="card-top"><div class="symbol">JS</div><div><h2>JavaScript</h2><p>فصول جافا سكريبت</p></div></div><div class="card-action"><span>عرض الفصول</span><span>←</span></div></button>
+<button class="card" onclick="openSection('py')" type="button"><div class="card-top"><div class="symbol">Py</div><div><h2>Python</h2><p>فصول بايثون</p></div></div><div class="card-action"><span>عرض الفصول</span><span>←</span></div></button>
+</div></section>
+<section class="view" id="levelsView"><div class="nav-row"><button class="back" onclick="goBack()" type="button">→ رجوع للخطوة السابقة</button></div><div class="heading"><h2 id="levelTitle"></h2><p id="levelSubtitle"></p></div><div class="stats"><span id="count"></span><span class="percent" id="percent"></span></div><div class="progress"><span id="progress"></span></div><div class="levels" id="levels"></div><button class="reset" onclick="resetCurrent()" type="button">إعادة ضبط تقدم هذا القسم</button></section>
+<footer><div class="credits"><span>تم عمل الموقع بواسطة <strong>أحمد حمدي</strong></span><span class="separator">•</span><span>تم تطويره بواسطة <strong>محمد رمضان الحرباوي</strong></span></div></footer>
+</main>
+<script>
+(function(){
+"use strict";
+var pad=function(n){return String(n).padStart(2,"0")};
+var seq=function(n,fn){return Array.from({length:n},function(_,i){return fn(i+1)})};
+var jsCodes="bdw3w88u mvznuf9z 4cm8pjf3 hwatnkbr 2atzu3yx mry8kncr yjf4cd4u bddcjrcf 5ambn5py 5d4afebb 2s3usxu9 2maa6zh4 3rmjd87x p42cnsn2 3dd4zecx 3w6k5amm 6as9ncck 2zyawvwt y29bb3fn y4vhz364 2nx79npe 4v48akfe mry5bt48 4jjymkcr mv2n5nrr 96ar39at 34nh8n7p 36waa7tc m9zsmntj 5cj84y5b 2bxw9mep zpxwcvha 3n3an452 27hwk7p2 2vy5rc7b ycxnz97b 4nxr9rwk yck23c66 mtsbya7h 4afj8kvb 3aytyfxt 4k5adw63".split(" ");
+var sections={
+ py:{name:"Python",subtitle:"فصول منصة كيريو - بايثون",urls:seq(25,function(i){return "https://www.efrah7.com/2026/09/answer-qureo-Python"+pad(i)+".html"})},
+ js:{name:"JavaScript",subtitle:"فصول منصة كيريو - جافا سكريبت",urls:jsCodes.map(function(c){return "https://tinyurl.com/"+c})},
+ fin:{name:"الثقافة المالية",subtitle:"إجابات مستويات منصة الثقافة المالية",urls:seq(22,function(i){return "https://www.efrah7.com/2026/"+(i<16?"09":"10")+"/answer-financial-literacy"+pad(i)+".html"})}
+};
+var current="",done={};
+try{done=JSON.parse(localStorage.getItem("lv")||"{}")||{}}catch(e){done={}}
+function save(){try{localStorage.setItem("lv",JSON.stringify(done))}catch(e){}}
+function showView(id){
+ document.querySelectorAll(".view").forEach(function(v){v.classList.remove("active")});
+ var target=document.getElementById(id);if(target)target.classList.add("active");
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+function setHistory(view,section){history.pushState({view:view,section:section||""},"","#"+(section||view))}
+window.showQureo=function(){current="";showView("qureo");setHistory("qureo")};
+window.openSection=function(id){
+ if(!sections[id])return;
+ current=id;
+ document.getElementById("levelTitle").textContent=sections[id].name;
+ document.getElementById("levelSubtitle").textContent=sections[id].subtitle;
+ renderLevels();showView("levelsView");setHistory("levelsView",id);
+};
+window.goBack=function(){
+ if(current==="py"||current==="js"){current="";showView("qureo");setHistory("qureo")}
+ else{current="";showView("home");setHistory("home")}
+};
+function updateProgress(){
+ var s=sections[current];if(!s)return;
+ var n=s.urls.filter(function(_,i){return !!done[current+i]}).length;
+ var pct=Math.round(n/s.urls.length*100);
+ document.getElementById("count").textContent="تم فتح "+n+" من "+s.urls.length+" فصل";
+ document.getElementById("percent").textContent=pct+"% إنجاز";
+ document.getElementById("progress").style.width=pct+"%";
+}
+function renderLevels(){
+ var s=sections[current],box=document.getElementById("levels");
+ if(!s||!box)return;
+ box.innerHTML="";
+ s.urls.forEach(function(url,i){
+  var key=current+i,a=document.createElement("a");
+  a.href=url;a.target="_blank";a.rel="noopener noreferrer";
+  a.innerHTML='<span class="tick" aria-hidden="true">✓</span><span class="level-number">الفصل '+(i+1)+'</span><span class="level-caption">اضغط لفتح الفصل</span>';
+  a.setAttribute("aria-label","الفصل "+(i+1));
+  if(done[key])a.classList.add("done");
+  a.addEventListener("click",function(){done[key]=1;save();a.classList.add("done");updateProgress()});
+  box.appendChild(a);
+ });
+ updateProgress();
+}
+window.resetCurrent=function(){
+ if(!current||!sections[current])return;
+ if(!window.confirm("هل تريد إعادة ضبط تقدم هذا القسم؟"))return;
+ sections[current].urls.forEach(function(_,i){delete done[current+i]});
+ save();renderLevels();
+};
+window.addEventListener("popstate",function(e){
+ var st=e.state;
+ if(!st||st.view==="home"){current="";showView("home")}
+ else if(st.view==="qureo"){current="";showView("qureo")}
+ else if(st.view==="levelsView"&&sections[st.section]){
+  current=st.section;
+  document.getElementById("levelTitle").textContent=sections[current].name;
+  document.getElementById("levelSubtitle").textContent=sections[current].subtitle;
+  renderLevels();showView("levelsView");
+ }
+});
+function applyTheme(t){
+ var mode=t==="dark"?"dark":"light";
+ document.documentElement.setAttribute("data-theme",mode);
+ document.documentElement.style.colorScheme=mode;
+ var dark=mode==="dark";
+ var icon=document.getElementById("themeIcon");
+ if(icon){
+  icon.innerHTML=dark?
+   '<svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>':
+   '<svg viewBox="0 0 24 24" fill="none"><path d="M20 15.2A8.2 8.2 0 0 1 8.8 4 8.4 8.4 0 1 0 20 15.2Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
+ }
+ var label=document.getElementById("themeLabel"),hint=document.getElementById("themeHint");
+ if(label)label.textContent=dark?"الوضع النهاري":"الوضع الليلي";
+ if(hint)hint.textContent=dark?"اضغط للعودة للوضع الفاتح":"اضغط لتفعيل الوضع الداكن";
+ var meta=document.querySelector('meta[name="theme-color"]');
+ if(meta)meta.setAttribute("content",dark?"#0b1420":"#f3f6fa");
+ try{localStorage.setItem("levels-theme",mode)}catch(e){}
+}
+var initialTheme="light";
+try{initialTheme=localStorage.getItem("levels-theme")||"light"}catch(e){}
+applyTheme(initialTheme);
+var themeButton=document.getElementById("themeToggle");
+if(themeButton){
+ themeButton.addEventListener("click",function(){
+  var now=document.documentElement.getAttribute("data-theme");
+  applyTheme(now==="dark"?"light":"dark");
+ });
+}
+})();
+</script></body></html>
